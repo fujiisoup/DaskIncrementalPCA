@@ -34,6 +34,7 @@ setup(name='incremental_pca',
       install_requires="""
         numpy>=1.11
         dask>=1.00
+        scikit-learn>=0.20
         """,
       classifiers=['License :: OSI Approved :: BSD License',
                    'Natural Language :: English',
