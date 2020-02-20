@@ -65,6 +65,14 @@ class IncrementalPCA(_BasePCA):
         is inferred from the data and set to ``5 * n_features``, to provide a
         balance between approximation accuracy and memory consumption.
 
+    svd_solver: 
+        auto :
+            the solver is selected by a default policy based on X.shape and n_components: if the input data is larger than 500x500 and the number of components to extract is lower than 80% of the smallest dimension of the data, then the more efficient ‘randomized’ method is enabled. Otherwise the exact full SVD is computed and optionally truncated afterwards.
+        full :
+            run exact full SVD and select the components by postprocessing
+        randomized :
+            run randomized SVD by using da.linalg.svd_compressed.
+
     Attributes
     ----------
     components_ : array, shape (n_components, n_features)
@@ -162,11 +170,12 @@ class IncrementalPCA(_BasePCA):
     """
 
     def __init__(self, n_components=None, whiten=False, copy=True,
-                 batch_size=None):
+                 batch_size=None, svd_solver='auto'):
         self.n_components = n_components
         self.whiten = whiten
         self.copy = copy
         self.batch_size = batch_size
+        self.svd_solver = svd_solver
 
     def fit(self, X, y=None):
         """Fit the model with X, using minibatches of size batch_size.
